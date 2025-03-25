@@ -1,0 +1,7 @@
+# Python files and directories
+*.py[cod]
+credentials.json
+token.pickle
+__pycache__/
+venv/
+.DS_Store
