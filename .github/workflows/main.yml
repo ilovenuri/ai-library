@@ -1,0 +1,22 @@
+name: Daily arXiv Crawler
+
+on:
+  schedule:
+    - cron: "0 1 * * *"  # Run at 1 AM UTC daily (10 AM KST)
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > credentials.json
+      - run: python arxiv_to_sheets.py
+        env:
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
